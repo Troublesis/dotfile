@@ -181,8 +181,8 @@ autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-# bindkey "^[[A" up-line-or-beginning-search # Up
-# bindkey "^[[B" down-line-or-beginning-search # Down
+bindkey "^[[A" up-line-or-beginning-search # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
 
 # --- Shell integrations ---
 eval "$(fzf --zsh)"
@@ -191,8 +191,8 @@ eval "$(zoxide init --cmd cd zsh)"
 # --- Keybindings ---
 bindkey '^[w' kill-region
 
-bindkey "^[[A" history-search-backword
-bindkey "^[[B" history-search-forword
+# bindkey "^[[A" history-search-backword
+# bindkey "^[[B" history-search-forword
 
 # Load all Zsh alias files from the ~/alias directory
 typeset -U config_files
