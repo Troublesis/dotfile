@@ -1,0 +1,9 @@
+services:
+  neovim:
+    container_name: nvchad
+    build: .
+    # volumes:
+    #   - /volume1:/volume1
+    stdin_open: true
+    tty: true
+
