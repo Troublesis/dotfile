@@ -35,7 +35,7 @@ RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerleve
 RUN echo 'q'
 
 # Clone dotfiles from repository
-RUN git clone --depth=1 https://github.com/Troublesis/dotfile.git $HOME/dotfiles \
+RUN git clone --depth=1 https://github.com/Troublesis/nvchad.git $HOME/dotfiles \
     && cd $HOME/dotfiles
 
 RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.bak
