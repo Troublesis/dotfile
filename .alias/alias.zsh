@@ -12,10 +12,6 @@ function tssh(){
 # alias bat="command -v bat > /dev/null 2>&1 && bat || cat"
 # alias top="command -v top > /dev/null 2>$1 && btop || top"
 
-
-alias cat="bat"
-alias top="btop"
-
 # eza
 alias tree="eza --tree"
 alias treel="eza --tree --long"
