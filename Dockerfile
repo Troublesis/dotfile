@@ -31,8 +31,7 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 
 # RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
-
-RUN echo 'q'
+# RUN echo 'q'
 
 # Clone dotfiles from repository
 RUN git clone --depth=1 https://github.com/Troublesis/nvchad.git $HOME/dotfiles \
@@ -43,8 +42,6 @@ RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.bak
 RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.rep
 
 RUN cp ~/dotfiles/.zshrc.bak ~/.zshrc
-
-# RUN source $HOME/.zshrc
 
 # Set the working directory
 WORKDIR /root
