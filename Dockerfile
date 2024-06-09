@@ -1,5 +1,5 @@
 # Use the specified base image
-FROM python:3.11-slim
+FROM python:3.11-alpine
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
@@ -8,8 +8,9 @@ ENV PYTHONUNBUFFERED=1
 RUN pip install --upgrade pip setuptools
 
 # Install required packages using apt-get (Debian-based)
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apk update && apk add --no-cache \
     zsh \
+    zsh-vcs \
     fzf \
     zoxide \
     exa \
@@ -19,13 +20,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     nodejs \
     neovim \
     ripgrep \
-    build-essential \
+    build-base \
     wget \
     curl \
     openssh-client \
-    rustc \
-    cargo && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    # require by telegram-upload 
+    rust \
+    cargo
 
 # Clone the NvChad starter repository
 RUN git clone https://github.com/NvChad/starter /root/.config/nvim
@@ -48,6 +49,10 @@ RUN git clone --depth=1 https://github.com/Troublesis/nvchad.git $HOME/dotfiles
 # Copy and replace .zshrc
 RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.rep
 RUN cp ~/dotfiles/.zshrc.rep ~/.zshrc
+
+RUN echo "q"
+
+# RUN cd ~/dotfiles && stow --adopt . && mv ~/dotfiles/.zshrc.rep ~/.zshrc && source ~/.zshrc && nvim
 
 # Set the working directory
 WORKDIR /root
