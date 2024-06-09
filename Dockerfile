@@ -4,8 +4,27 @@ FROM python:3.11-slim
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 
+# Set the working directory in the container
+WORKDIR $HOME
+ENV HOME=/root
+
+# Create the target directory
+RUN mkdir -p $HOME/dotfiles
+
+# Set the working directory in the container
+WORKDIR $HOME/dotfiles
+
+# Copy all local files to the target directory
+COPY . $HOME/dotfiles
+
+# Copy requirements.txt before other files to leverage Docker cache
+# COPY requirements.txt ./
+
 # Upgrade pip and setuptools
 RUN pip install --upgrade pip setuptools
+
+# Install the necessary dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Install required packages
 RUN apk update && apk add --no-cache \
@@ -44,14 +63,14 @@ RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerleve
 # RUN echo 'q'
 
 # Clone dotfiles from repository
-RUN git clone --depth=1 https://github.com/Troublesis/nvchad.git $HOME/dotfiles \
+# RUN git clone --depth=1 https://github.com/Troublesis/nvchad.git $HOME/dotfiles \
     && cd $HOME/dotfiles
 
-RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.bak
+# RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.bak
 
 RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.rep
 
-RUN cp ~/dotfiles/.zshrc.bak ~/.zshrc
+RUN cp ~/dotfiles/.zshrc.rep ~/.zshrc
 
 # RUN echo "Enter following command to automatically finish initial setup:"
 # RUN echo "cd ~/dotfiles && stow --adopt . && mv ~/dotfiles/.zshrc.rep ~/.zshrc && source ~/.zshrc && nvim"
