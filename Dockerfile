@@ -3,28 +3,9 @@ FROM python:3.11-slim
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
-ENV HOME=/root
-
-# Set the working directory in the container
-WORKDIR $HOME
-
-# Create the target directory
-RUN mkdir -p $HOME/dotfiles
-
-# Set the working directory in the container
-WORKDIR $HOME/dotfiles
-
-# Copy all local files to the target directory
-COPY . $HOME/dotfiles
 
 # Upgrade pip and setuptools
 RUN pip install --upgrade pip setuptools
-
-# Copy requirements.txt before other files to leverage Docker cache
-COPY requirements.txt ./
-
-# Install the necessary dependencies
-RUN pip install --no-cache-dir -r requirements.txt
 
 # Install required packages using apt-get (Debian-based)
 RUN apt-get update && apt-get install -y --no-install-recommends \
