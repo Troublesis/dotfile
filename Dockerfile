@@ -1,5 +1,11 @@
 # Use the specified base image
-FROM python:3.12-alpine
+FROM python:3.11-slim
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+
+# Upgrade pip and setuptools
+RUN pip install --upgrade pip setuptools
 
 # Install required packages
 RUN apk update && apk add --no-cache \
@@ -21,9 +27,6 @@ RUN apk update && apk add --no-cache \
     # for telegram-upload requires python v3.7-11
     rust \
     cargo
-
-# Upgrade setuptools
-RUN pip install --upgrade setuptools
 
 # Clone the NvChad starter repository
 RUN git clone https://github.com/NvChad/starter /root/.config/nvim
