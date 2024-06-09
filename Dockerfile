@@ -4,8 +4,6 @@ FROM python:3.12-alpine
 # Install required packages
 RUN apk update && apk add --no-cache \
     zsh \
-    build-essential \
-    rust \
     zsh-vcs \
     fzf \
     zoxide \
@@ -19,7 +17,10 @@ RUN apk update && apk add --no-cache \
     build-base \
     wget \
     curl \
-    openssh-client
+    openssh-client \
+    # for telegram-upload
+    rust \
+    cargo
 
 # Clone the NvChad starter repository
 RUN git clone https://github.com/NvChad/starter /root/.config/nvim
