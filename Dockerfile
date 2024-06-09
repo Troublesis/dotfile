@@ -45,10 +45,10 @@ RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.bak
 
 RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.rep
 
-RUN cp ~/dotfiles/.zshrc.bak ~/.zshrc && clear
+RUN cp ~/dotfiles/.zshrc.bak ~/.zshrc
 
-RUN echo "Enter following command to automatically finish initial setup:"
-RUN echo "cd ~/dotfiles && stow --adopt . && mv ~/dotfiles/.zshrc.rep ~/.zshrc && source ~/.zshrc && nvim"
+# RUN echo "Enter following command to automatically finish initial setup:"
+# RUN echo "cd ~/dotfiles && stow --adopt . && mv ~/dotfiles/.zshrc.rep ~/.zshrc && source ~/.zshrc && nvim"
 
 # Set the working directory
 WORKDIR /root
