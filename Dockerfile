@@ -50,7 +50,7 @@ RUN git clone --depth=1 https://github.com/Troublesis/nvchad.git $HOME/dotfiles
 RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.rep
 RUN cp ~/dotfiles/.zshrc.rep ~/.zshrc
 
-RUN echo "q"
+# RUN echo "q"
 
 # RUN cd ~/dotfiles && stow --adopt . && mv ~/dotfiles/.zshrc.rep ~/.zshrc && source ~/.zshrc && nvim
 
