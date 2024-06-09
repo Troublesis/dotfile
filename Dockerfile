@@ -4,6 +4,8 @@ FROM python:3.12-alpine
 # Install required packages
 RUN apk update && apk add --no-cache \
     zsh \
+    build-essential \
+    rust \
     zsh-vcs \
     fzf \
     zoxide \
