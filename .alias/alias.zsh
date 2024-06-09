@@ -1,3 +1,5 @@
+alias pyenv="python3 -m venv .venv"
+alias senv="source .venv/bin/activate"
 alias dot="cd ~/dotfiles/"
 # tmux
 function tssh(){
