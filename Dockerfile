@@ -1,35 +1,56 @@
 # Use the specified base image
 FROM python:3.11-slim
 
-# Install required packages
-RUN apt-get update && apk add --no-cache \
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV HOME=/root
+
+# Set the working directory in the container
+WORKDIR $HOME
+
+# Create the target directory
+RUN mkdir -p $HOME/dotfiles
+
+# Set the working directory in the container
+WORKDIR $HOME/dotfiles
+
+# Copy all local files to the target directory
+COPY . $HOME/dotfiles
+
+# Upgrade pip and setuptools
+RUN pip install --upgrade pip setuptools
+
+# Copy requirements.txt before other files to leverage Docker cache
+COPY requirements.txt ./
+
+# Install the necessary dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install required packages using apt-get (Debian-based)
+RUN apt-get update && apt-get install -y --no-install-recommends \
     zsh \
-    zsh-vcs \
     fzf \
     zoxide \
-    eza \
+    exa \
     tmux \
     stow \
     git \
     nodejs \
     neovim \
     ripgrep \
-    build-base \
+    build-essential \
     wget \
     curl \
     openssh-client \
-    # for telegram-upload requires python v3.7-11
-    rust \
-    cargo
-
-# Upgrade setuptools
-RUN pip install --upgrade setuptools
+    rustc \
+    cargo && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Clone the NvChad starter repository
 RUN git clone https://github.com/NvChad/starter /root/.config/nvim
 
 # Install zinit
-RUN zsh -y -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+RUN zsh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
 
 # Install oh-my-zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -37,16 +58,15 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
 # Install p10k
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 
+# Add p10k to .zshrc
+RUN echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+
 # Clone dotfiles from repository
-RUN git clone --depth=1 https://github.com/Troublesis/nvchad.git $HOME/dotfiles \
-    && cd $HOME/dotfiles
+RUN git clone --depth=1 https://github.com/Troublesis/nvchad.git $HOME/dotfiles
 
-RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.bak
-
-RUN cp ~/dotfiles/.zshrc.bak ~/.zshrc
-
-# RUN echo "Enter following command to automatically finish initial setup:"
-# RUN echo "cd ~/dotfiles && stow --adopt . && cp ~/dotfiles/.zshrc.bak ~/.zshrc && source ~/.zshrc && nvim"
+# Copy and replace .zshrc
+RUN cp ~/dotfiles/.zshrc ~/dotfiles/.zshrc.rep
+RUN cp ~/dotfiles/.zshrc.rep ~/.zshrc
 
 # Set the working directory
 WORKDIR /root
