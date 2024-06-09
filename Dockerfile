@@ -22,6 +22,9 @@ RUN apk update && apk add --no-cache \
     rust \
     cargo
 
+# Upgrade setuptools
+RUN pip install --upgrade setuptools
+
 # Clone the NvChad starter repository
 RUN git clone https://github.com/NvChad/starter /root/.config/nvim
 
