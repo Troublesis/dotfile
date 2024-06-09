@@ -18,7 +18,7 @@ RUN apk update && apk add --no-cache \
     wget \
     curl \
     openssh-client \
-    # for telegram-upload
+    # for telegram-upload requires python v3.7-11
     rust \
     cargo
 
