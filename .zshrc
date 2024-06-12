@@ -90,7 +90,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
+  export EDITOR='nvim'
 else
   export EDITOR='nvim'
 fi
@@ -161,3 +161,57 @@ autoload -Uz compinit && compinit
 
 
 zinit cdreplay -q
+
+# history setup
+HISTFILE=$HOME/.zhistory
+HISTDUP=erase
+HISTSIZE=9999
+SAVEHIST=$HISTSIZE
+setopt appendhistory
+setopt share_history
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+
+setopt hist_find_no_dups
+setopt hist_expire_dups_first
+setopt hist_verify
+
+# Completion styling
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+
+# --- Shell integrations ---
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+PATH="$HOME/.local/bin:$PATH"
+eval "$(zoxide init --cmd cd zsh)"
+
+# Better history
+# Credits to https://coderwall.com/p/jpj_6q/zsh-better-history-searching-with-arrow-keys
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+# # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+#
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Load all Zsh alias files from the ~/alias directory
+typeset -U config_files
+config_files=(~/.alias/*.zsh(N))
+
+# Loop through the files and source them
+for file in "${config_files[@]}"; do
+
+    source "$file"
+
+done
+
+# Clean up the variable
+unset config_files
